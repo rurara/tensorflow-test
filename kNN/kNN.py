@@ -53,8 +53,6 @@ def file2Matrix(fileName):
 # print(file2Matrix('datingTestSet.txt'))
 
 
-
-
 datingDataMat, datingDataLabels = file2Matrix('datingTestSet2.txt')
 # print(datingDataLabels)
 # print(datingDataLabels * 15)
@@ -62,7 +60,7 @@ datingDataMat, datingDataLabels = file2Matrix('datingTestSet2.txt')
 fig = plt.figure()
 ax = fig.add_subplot(111)
 # ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2])
-ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 15*array(datingDataLabels), 15*array(datingDataLabels))
+ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 20.0*array(datingDataLabels), 20.0*array(datingDataLabels))
 plt.show()
 
 
