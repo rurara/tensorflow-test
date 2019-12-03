@@ -59,10 +59,25 @@ datingDataMat, datingDataLabels = file2Matrix('datingTestSet2.txt')
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-# ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2])
-ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 20.0*array(datingDataLabels), 20.0*array(datingDataLabels))
-plt.show()
 
 
+#챠트 확인하기 
+# ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 20.0*array(datingDataLabels), 20.0*array(datingDataLabels))
+# plt.show()
+
+def autoNorm(dataSet):
+	minVals = dataSet.min(0)
+	maxVals = dataSet.max(0)
+	ranges = maxVals - minVals
+	normDataSet = zeros(shape(dataSet))
+	m = dataSet.shape[0]
+	normDataSet = dataSet - tile(minVals, (m,1))
+	normDataSet = normDataSet / tile(ranges, (m, 1))
+	return normDataSet, ranges, minVals
+	
 
 
+normMat, ranges, minVals = autoNorm(datingDataMat)
+
+print(datingDataMat)
+print(autoNorm(datingDataMat))

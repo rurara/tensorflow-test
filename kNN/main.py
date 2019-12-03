@@ -22,6 +22,14 @@ def classif0(inX, dataSet, labels, k):
 	sortedClassCount = sorted(classCount.items(), key=operator.itemgetter(1), reverse=True)
 	return sortedClassCount[0][0]
 
+
+
+
+
+
+
+
+
 print(classif0([0,0], group, labels, 3))
 print(classif0([0,1], group, labels, 3))
 print(classif0([1,0], group, labels, 3))
