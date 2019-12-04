@@ -14,7 +14,7 @@ group, labels = createDataSet()
 print(group)
 print(labels)
 
-def classif0(inX, dataSet, labels, k):
+def classify0(inX, dataSet, labels, k):
 	dataSetSize = dataSet.shape[0]
 	diffMat = tile(inX, (dataSetSize, 1)) - dataSet
 	sqDiffMat = diffMat ** 2
@@ -43,10 +43,10 @@ def file2Matrix(fileName):
 		index += 1
 	return returnMat, array(classLabelVector, dtype=int32)
 	
-# print(classif0([0,0], group, labels, 3))
-# print(classif0([0,1], group, labels, 3))
-# print(classif0([1,0], group, labels, 3))
-# print(classif0([1,1], group, labels, 3))	
+# print(classify0([0,0], group, labels, 3))
+# print(classify0([0,1], group, labels, 3))
+# print(classify0([1,0], group, labels, 3))
+# print(classify0([1,1], group, labels, 3))	
 
 
 
@@ -75,9 +75,27 @@ def autoNorm(dataSet):
 	normDataSet = normDataSet / tile(ranges, (m, 1))
 	return normDataSet, ranges, minVals
 	
+#데이터 정규화 하기 
+# normMat, ranges, minVals = autoNorm(datingDataMat)
 
 
-normMat, ranges, minVals = autoNorm(datingDataMat)
+def datingClassTest():
+	hoRatio = 0.10
+	datingDataMat, datingLabels = file2Matrix('datingTestSet2.txt')
+	normMat, ranges, minVals = autoNorm(datingDataMat)
+	m = normMat.shape[0]
+	numTestVecs = int(m*hoRatio)
+	errorCount = 0.0
+	for i in range(numTestVecs):
+		classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :], datingLabels[numTestVecs:m], 3)
+		print("계산 값 - %d   실제 값- %d" % (classifierResult, datingLabels[i]))
+		if (classifierResult != datingLabels[i]):
+			errorCount += 1.0
+	print("error count %f" % (errorCount / float(numTestVecs)))
+
+
+
+datingClassTest()
 
 print(datingDataMat)
 print(autoNorm(datingDataMat))
