@@ -53,16 +53,13 @@ def file2Matrix(fileName):
 # print(file2Matrix('datingTestSet.txt'))
 
 
-datingDataMat, datingDataLabels = file2Matrix('datingTestSet2.txt')
-# print(datingDataLabels)
-# print(datingDataLabels * 15)
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
 
 #챠트 확인하기 
-# ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 20.0*array(datingDataLabels), 20.0*array(datingDataLabels))
+# ax.scatter(datingDataMat[:, 1], datingDataMat[:, 2], 20.0*array(datingLabels), 20.0*array(datingLabels))
 # plt.show()
 
 def autoNorm(dataSet):
@@ -81,21 +78,35 @@ def autoNorm(dataSet):
 
 def datingClassTest():
 	hoRatio = 0.10
-	datingDataMat, datingLabels = file2Matrix('datingTestSet2.txt')
-	normMat, ranges, minVals = autoNorm(datingDataMat)
+	# datingDataMat, datingLabels = file2Matrix('datingTestSet2.txt')
+	# normMat, ranges, minVals = autoNorm(datingDataMat)
 	m = normMat.shape[0]
 	numTestVecs = int(m*hoRatio)
 	errorCount = 0.0
 	for i in range(numTestVecs):
 		classifierResult = classify0(normMat[i, :], normMat[numTestVecs:m, :], datingLabels[numTestVecs:m], 3)
-		print("계산 값 - %d   실제 값- %d" % (classifierResult, datingLabels[i]))
+		# print("계산 값 - %d   실제 값- %d" % (classifierResult, datingLabels[i]))
 		if (classifierResult != datingLabels[i]):
 			errorCount += 1.0
 	print("error count %f" % (errorCount / float(numTestVecs)))
 
 
+def classifyPerson():
+	resultList = ['별로임', '살짝...?', '개좋아']
+	percentTats = float(input("비디오 게임 얼마나 하니?"))
+	ffMiles = float(input("1년에 비행기 어느정도 타?"))
+	iceCream = float(input("1년에 아이스크림을 몇리터나 먹어?"))
+	inArr = array([ffMiles, percentTats, iceCream])
+	classifierResult = classify0((inArr - minVals)/ranges, normMat, datingLabels, 3)
+
+	print("넌 아마 이 사람을...", resultList[int(classifierResult) - 1])
+
+datingDataMat, datingLabels = file2Matrix('datingTestSet2.txt')
+normMat, ranges, minVals = autoNorm(datingDataMat)
+
+
 
 datingClassTest()
-
+classifyPerson()
 print(datingDataMat)
 print(autoNorm(datingDataMat))
