@@ -1,4 +1,5 @@
 from math import log
+import matplotlib
 
 def clacShannonEnt(dataSet):
 	numEntries = len(dataSet)
@@ -26,8 +27,21 @@ def createDataSet():
 
 	return returnDataSet, labels
 
+def splitDataSet(dataSet, axis, value):
+	retDataSet = []
+	for featVec in dataSet:
+		if featVec[axis] == value:
+			reducedFeatVec = featVec[:axis]
+			reducedFeatVec.extend(featVec[axis+1:])
+			retDataSet.append(reducedFeatVec)
+	return retDataSet
+
+
+
 tempDataSet, labels = createDataSet()
 
+
+splitDataSet(tempDataSet, 0, 0)
 
 data = clacShannonEnt(tempDataSet)
 print(data)
