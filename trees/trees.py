@@ -1,7 +1,7 @@
 from math import log
 import matplotlib
 
-def clacShannonEnt(dataSet):
+def calcShannonEnt(dataSet):
 	numEntries = len(dataSet)
 	labelCounts = {}
 	for featVec in dataSet:
@@ -9,11 +9,11 @@ def clacShannonEnt(dataSet):
 		if currentLabel not in labelCounts.keys():
 			labelCounts[currentLabel] = 0
 		labelCounts[currentLabel] += 1
-	clacShannonEnt = 0.0
+	calcShannonEnt = 0.0
 	for key in labelCounts:
 		prob = float(labelCounts[key] / numEntries)
-		clacShannonEnt -= prob * log(prob, 2)
-	return clacShannonEnt
+		calcShannonEnt -= prob * log(prob, 2)
+	return calcShannonEnt
 
 def createDataSet():
 	returnDataSet = [
@@ -37,11 +37,31 @@ def splitDataSet(dataSet, axis, value):
 	return retDataSet
 
 
+def chooseBestFeatureToSplit(dataSet):
+	numFeatures= len(dataSet[0]) - 1
+	baseEntropy = calcShannonEnt(dataSet)
+	bestInfoGain = 0.0; bestFeature = -1
+
+	for i in range(numFeatures):
+		featList = [example[i] for example in dataSet]
+		uniqueVals = set(featList)
+		newEntropy = 0.0
+		for value in uniqueVals:
+			subDataSet = splitDataSet(dataSet, i, value)
+			prob = len(subDataSet) / float(len(dataSet))
+			newEntropy += prob * calcShannonEnt(subDataSet)
+		infoGain = baseEntropy - newEntropy
+		if (infoGain > bestInfoGain):
+			bestInfoGain = infoGain
+			bestFeature = i
+	return bestFeature
+
 
 tempDataSet, labels = createDataSet()
 
 
 splitDataSet(tempDataSet, 0, 0)
 
-data = clacShannonEnt(tempDataSet)
+data = calcShannonEnt(tempDataSet)
 print(data)
+print(chooseBestFeatureToSplit(tempDataSet))
