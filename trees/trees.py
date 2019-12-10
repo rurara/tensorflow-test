@@ -56,12 +56,30 @@ def chooseBestFeatureToSplit(dataSet):
 			bestFeature = i
 	return bestFeature
 
-
+def createTree(dataSet, labels):
+	classList = [example[-1] for example in dataSet]
+	if classList.count(classList[0]) == len(classList):
+		return classList[0]
+	if len(dataSet[0]) == 1:
+		return majorityCnt(classList)
+	bestFeat = chooseBestFeatureToSplit(dataSet)
+	bestFeatLabel = labels[bestFeat]
+	myTree = {bestFeatLabel:{}}
+	del(labels[bestFeat])
+	featValues = [example[bestFeat] for example in dataSet]
+	uniqueVals = set(featValues)
+	for value in uniqueVals:
+		subLabels = labels[:]
+		myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
+	return myTree	
 tempDataSet, labels = createDataSet()
 
 
 splitDataSet(tempDataSet, 0, 0)
 
 data = calcShannonEnt(tempDataSet)
+myTree = createTree(tempDataSet, labels)
+print(tempDataSet)
+print(myTree)
 print(data)
 print(chooseBestFeatureToSplit(tempDataSet))
